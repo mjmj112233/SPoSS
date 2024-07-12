@@ -1,0 +1,21 @@
+import React, { useState } from 'react';
+import styles from './product.module.css';
+
+const OrderDetails = ({ product, onClose }) => {
+    const [showModal, setShowModal] = useState(true);
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        onClose(); 
+    };
+
+    return (
+        <div className={styles.productModal}>
+            <div className={styles.productModalContent}>
+                <button className={styles.closeButton} onClick={handleCloseModal}>Close</button>
+            </div>
+        </div>
+    );
+};
+
+export default OrderDetails;

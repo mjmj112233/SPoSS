@@ -10,6 +10,9 @@ const products = [
     { id: 3, name: 'Product 3', category: 'Categ 3', price: 349, image: sampleProduct },
     { id: 4, name: 'Product 4', category: 'Categ 4', price: 499, image: sampleProduct },
     { id: 5, name: 'Product 5', category: 'Categ 5', price: 549, image: sampleProduct },
+    { id: 6, name: 'Product 6', category: 'Categ 6', price: 699, image: sampleProduct },
+    { id: 7, name: 'Product 7', category: 'Categ 7', price: 749, image: sampleProduct },
+    { id: 8, name: 'Product 8', category: 'Categ 8', price: 899, image: sampleProduct },
 ];
 
 const Products = () => {
@@ -44,8 +47,7 @@ const Products = () => {
     };
 
     return (
-        <div>
-            <h2>Products</h2>
+        <div className={styles.mainContainer}>
             <div className={styles.productList}>
                 {products.map((product) => (
                     <div key={product.id} className={styles.productContainer} onClick={() => handleProductClick(product.id)}>

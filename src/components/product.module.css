@@ -1,3 +1,7 @@
+.mainContainer{
+  margin-left: 0;
+}
+
 .productList {
   display: flex;
   flex-wrap: wrap;

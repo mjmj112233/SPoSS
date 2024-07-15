@@ -5,10 +5,9 @@
 .products {
     flex: 3;
     padding: 20px;
-    border-right: 1px solid #ccc;
 }
 
 .receipt {
-    flex: 1;
-    padding: 20px;
+    flex: 2;
+    padding: 10px;
 }

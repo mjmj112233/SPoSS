@@ -52,10 +52,24 @@
     cursor: pointer;
 }
 
-.logoutButton {
-    margin-right: 40px;
+.navigation {
     display: flex;
     align-items: center;
+}
+
+.navigation a {
+    font-size: 18px;
+    margin-right: 40px; 
+    color: #e8af12; 
+    text-decoration: none; 
+}
+
+.navigation a:last-child {
+    margin-right: 50px;
+}
+
+.logoutButton {
+    margin-right: 60px;
     cursor: pointer;
 }
 

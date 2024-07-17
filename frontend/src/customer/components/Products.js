@@ -1,23 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './product.module.css';
 import sampleProduct from '../assets/sample.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
-const products = [
-    { id: 1, name: 'Product 1', category: 'Categ 1', price: 149, image: sampleProduct },
-    { id: 2, name: 'Product 2', category: 'Categ 2', price: 299, image: sampleProduct },
-    { id: 3, name: 'Product 3', category: 'Categ 3', price: 349, image: sampleProduct },
-    { id: 4, name: 'Product 4', category: 'Categ 4', price: 499, image: sampleProduct },
-    { id: 5, name: 'Product 5', category: 'Categ 5', price: 549, image: sampleProduct },
-    { id: 6, name: 'Product 6', category: 'Categ 6', price: 699, image: sampleProduct },
-    { id: 7, name: 'Product 7', category: 'Categ 7', price: 749, image: sampleProduct },
-    { id: 8, name: 'Product 8', category: 'Categ 8', price: 899, image: sampleProduct },
-];
-
 const Products = () => {
+    const [products, setProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    const fetchProducts = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/api/products');
+            if (!response.ok) {
+                throw new Error('Failed to fetch products');
+            }
+            const data = await response.json();
+            setProducts(data);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    };
 
     const handleProductClick = (productId) => {
         const product = products.find(p => p.id === productId);
@@ -51,10 +58,10 @@ const Products = () => {
             <div className={styles.productList}>
                 {products.map((product) => (
                     <div key={product.id} className={styles.productContainer} onClick={() => handleProductClick(product.id)}>
-                        <img src={product.image} alt={product.name} className={styles.productImage} />
+                        <img src={product.image || sampleProduct} alt={product.name} className={styles.productImage} />
                         <div className={styles.productName}>{product.name}</div>
                         <div className={styles.productDetails}>
-                            <div className={styles.productCategory}>{product.category}</div>
+                            <div className={styles.productCategory}>{product.category.name}</div> {/* Assuming category is an object with a name property */}
                             <div className={styles.productPrice}>₱ {product.price}</div>
                         </div>
                     </div>
@@ -67,9 +74,10 @@ const Products = () => {
                         <button className={styles.closeButton} onClick={handleCloseModal}>
                             <FontAwesomeIcon icon={faTimesCircle} />
                         </button>
-                        <img src={selectedProduct.image} alt={selectedProduct.name} className={styles.productModalImage} />
+                        <img src={selectedProduct.image || sampleProduct} alt={selectedProduct.name} className={styles.productModalImage} />
                         <div className={styles.productModalDetails}>
                             <h2>{selectedProduct.name}</h2>
+                            <div className={styles.productCategory}>{selectedProduct.category.name}</div>
                             <div className={styles.productPrice}>₱ {selectedProduct.price}</div>
                         </div>
 

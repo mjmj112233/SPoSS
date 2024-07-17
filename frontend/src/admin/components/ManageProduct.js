@@ -1,22 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './adminproduct.module.css';
 import sampleProduct from '../assets/sample.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus, faTimesCircle, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
-const products = [
-    { id: 1, name: 'Product 1', category: 'Categ 1', price: 149, image: sampleProduct },
-    { id: 2, name: 'Product 2', category: 'Categ 2', price: 299, image: sampleProduct },
-    { id: 3, name: 'Product 3', category: 'Categ 3', price: 349, image: sampleProduct },
-    { id: 4, name: 'Product 4', category: 'Categ 4', price: 499, image: sampleProduct },
-    { id: 5, name: 'Product 5', category: 'Categ 5', price: 549, image: sampleProduct },
-    { id: 6, name: 'Product 6', category: 'Categ 6', price: 699, image: sampleProduct },
-    { id: 7, name: 'Product 7', category: 'Categ 7', price: 749, image: sampleProduct },
-    { id: 8, name: 'Product 8', category: 'Categ 8', price: 899, image: sampleProduct },
-];
-
 const ManageProduct = () => {
+    const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [editModal, setEditModal] = useState(false);
+    const [newProductName, setNewProductName] = useState('');
+    const [newProductCategory, setNewProductCategory] = useState('');
+    const [newProductPrice, setNewProductPrice] = useState('');
+    const [editingProduct, setEditingProduct] = useState(null);
+
+    useEffect(() => {
+        fetchProducts();
+        fetchCategories();
+    }, []);
+
+    const fetchProducts = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/api/products');
+            if (!response.ok) {
+                throw new Error('Failed to fetch products');
+            }
+            const data = await response.json();
+            setProducts(data);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    };
+
+    const fetchCategories = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/api/categories');
+            if (!response.ok) {
+                throw new Error('Failed to fetch categories');
+            }
+            const data = await response.json();
+            setCategories(data);
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
+    };
 
     const openModal = () => {
         setShowModal(true);
@@ -24,6 +51,93 @@ const ManageProduct = () => {
 
     const closeModal = () => {
         setShowModal(false);
+        resetForm();
+    };
+
+    const openEditModal = (product) => {
+        setEditingProduct(product);
+        setNewProductName(product.name);
+        setNewProductCategory(product.category.id); // Assuming product.category is an object with an id property
+        setNewProductPrice(product.price.toString());
+        setEditModal(true);
+    };
+
+    const closeEditModal = () => {
+        setEditingProduct(null);
+        resetForm();
+        setEditModal(false);
+    };
+
+    const resetForm = () => {
+        setNewProductName('');
+        setNewProductCategory('');
+        setNewProductPrice('');
+    };
+
+    const addProduct = async () => {
+        try {
+            const formData = new FormData();
+            formData.append('name', newProductName);
+            formData.append('category', newProductCategory); // Assuming category ID is sent as a string
+            formData.append('price', newProductPrice);
+            
+            // Assign sampleProduct for the image
+            formData.append('image', sampleProduct); 
+
+            const response = await fetch('http://localhost:8080/api/products', {
+                method: 'POST',
+                body: formData,
+            });
+            if (!response.ok) {
+                throw new Error('Failed to add product');
+            }
+            const data = await response.json();
+            setProducts([...products, data]);
+            closeModal();
+        } catch (error) {
+            console.error('Error adding product:', error);
+        }
+    };
+
+    const deleteProduct = async (product) => {
+        if (window.confirm(`Are you sure you want to delete ${product.name}?`)) {
+            try {
+                const response = await fetch(`http://localhost:8080/api/products/${product.id}`, {
+                    method: 'DELETE',
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to delete product');
+                }
+                setProducts(products.filter(prod => prod.id !== product.id));
+            } catch (error) {
+                console.error('Error deleting product:', error);
+            }
+        }
+    };
+
+    const updateProduct = async () => {
+        try {
+            const formData = new FormData();
+            formData.append('name', newProductName);
+            formData.append('category', newProductCategory); 
+            formData.append('price', newProductPrice);
+
+            formData.append('image', editingProduct.image || sampleProduct); 
+
+            const response = await fetch(`http://localhost:8080/api/products/${editingProduct.id}`, {
+                method: 'PUT',
+                body: formData,
+            });
+            if (!response.ok) {
+                throw new Error('Failed to update product');
+            }
+            const updatedProduct = { ...editingProduct, name: newProductName, category: { id: newProductCategory }, price: parseFloat(newProductPrice) };
+            const updatedProducts = products.map(prod => (prod.id === updatedProduct.id ? updatedProduct : prod));
+            setProducts(updatedProducts);
+            closeEditModal(); 
+        } catch (error) {
+            console.error('Error updating product:', error);
+        }
     };
 
     return (
@@ -31,17 +145,16 @@ const ManageProduct = () => {
             <div className={styles.productList}>
                 {products.map((product) => (
                     <div key={product.id} className={styles.productContainer}>
-                        <button className={styles.editButton} onClick={openModal}>
+                        <button className={styles.editButton} onClick={() => openEditModal(product)}>
                             <FontAwesomeIcon icon={faEdit} />
                         </button>
-                        <button className={styles.deleteButton} onClick={null/*null muna*/}>
+                        <button className={styles.deleteButton} onClick={() => deleteProduct(product)}>
                             <FontAwesomeIcon icon={faTrashAlt} />
                         </button>
-                        
-                        <img src={product.image} alt={product.name} className={styles.productImage} />
+                        <img src={product.image || sampleProduct} alt={product.name} className={styles.productImage} />
                         <div className={styles.productName}>{product.name}</div>
                         <div className={styles.productDetails}>
-                            <div className={styles.productCategory}>{product.category}</div>
+                            <div className={styles.productCategory}>{product.category.name}</div> {/* Assuming category is an object with a name property */}
                             <div className={styles.productPrice}>₱ {product.price}</div>
                         </div>
                     </div>
@@ -58,14 +171,78 @@ const ManageProduct = () => {
                             <FontAwesomeIcon icon={faTimesCircle} />
                         </button>
                         <div className={styles.modalHeader}>
-                            <h2>Product Modal</h2>
+                            <h2>Add Product</h2>
                         </div>
                         <div className={styles.modalBody}>
-                            <p>formmmmmmm</p>
+                            <input
+                                type="text"
+                                placeholder="Product Name"
+                                value={newProductName}
+                                onChange={(e) => setNewProductName(e.target.value)}
+                            />
+                            <select
+                                value={newProductCategory}
+                                onChange={(e) => setNewProductCategory(e.target.value)}
+                            >
+                                <option value="">Select Category</option>
+                                {categories.map((category) => (
+                                    <option key={category.id} value={category.id}>
+                                        {category.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <input
+                                type="number"
+                                placeholder="Price"
+                                value={newProductPrice}
+                                onChange={(e) => setNewProductPrice(e.target.value)}
+                            />
                         </div>
                         <div className={styles.modalFooter}>
                             <button onClick={closeModal}>Cancel</button>
-                            <button onClick={closeModal}>Save</button>
+                            <button onClick={addProduct}>Save</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {editModal && (
+                <div className={styles.modal}>
+                    <div className={styles.modalContent}>
+                        <button className={styles.closeButton} onClick={closeEditModal}>
+                            <FontAwesomeIcon icon={faTimesCircle} />
+                        </button>
+                        <div className={styles.modalHeader}>
+                            <h2>Edit Product</h2>
+                        </div>
+                        <div className={styles.modalBody}>
+                            <input
+                                type="text"
+                                placeholder="Product Name"
+                                value={newProductName}
+                                onChange={(e) => setNewProductName(e.target.value)}
+                            />
+                            <select
+                                value={newProductCategory}
+                                onChange={(e) => setNewProductCategory(e.target.value)}
+                            >
+                                <option value="">Select Category</option>
+                                {categories.map((category) => (
+                                    <option key={category.id} value={category.id}>
+                                        {category.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <input
+                                type="number"
+                                placeholder="Price"
+                                value={newProductPrice}
+                                onChange={(e) => setNewProductPrice(e.target.value)}
+                            />
+                        </div>
+                        <div className={styles.modalFooter}>
+                            <button onClick={closeEditModal}>Cancel</button>
+                            <button onClick={updateProduct}>Save</button>
                         </div>
                     </div>
                 </div>

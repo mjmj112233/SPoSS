@@ -127,6 +127,7 @@
     font-size: 16px;
     color: #e1af27;
     margin-left: 5px;
+    z-index: 1;
 }
 
 .deleteButton {

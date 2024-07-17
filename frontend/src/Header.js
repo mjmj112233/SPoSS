@@ -1,17 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './firebase/config'; 
 import styles from './header.module.css';
 import logoutIcon from './assets/logout.svg';
 
-const categories = ["Categ 1", "Categ 2", "Categ 3", "Categ 4", "Categ 5"];
-
 const Header = () => {
   const [user] = useAuthState(auth);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    // Function to fetch categories
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/categories');
+        if (!response.ok) {
+          throw new Error('Failed to fetch categories');
+        }
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleLogout = () => {
-     auth.signOut();
+    auth.signOut();
   };
 
   return (
@@ -22,8 +39,8 @@ const Header = () => {
       </div>
       {user && (
         <div className={styles.categories}>
-          {categories.map((category, index) => (
-            <span key={index}>{category}</span>
+          {categories.map((category) => (
+            <span key={category.id}>{category.name}</span>
           ))}
         </div>
       )}

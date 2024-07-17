@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styles from './product.module.css';
-import sampleProduct from '../assets/sample.png';
+import sampleProduct from '../assets/sample.png';  // Import default image
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
-const Products = () => {
+const Products = ({ searchQuery }) => {
     const [products, setProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
@@ -53,15 +53,19 @@ const Products = () => {
         }
     };
 
+    const filteredProducts = products.filter(product =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <div className={styles.mainContainer}>
             <div className={styles.productList}>
-                {products.map((product) => (
+                {filteredProducts.map((product) => (
                     <div key={product.id} className={styles.productContainer} onClick={() => handleProductClick(product.id)}>
-                        <img src={product.image || sampleProduct} alt={product.name} className={styles.productImage} />
+                        <img src={product.image || sampleProduct} alt={product.name} className={styles.productImage} /> {/* Use || operator to fallback to sampleProduct */}
                         <div className={styles.productName}>{product.name}</div>
                         <div className={styles.productDetails}>
-                            <div className={styles.productCategory}>{product.category.name}</div> {/* Assuming category is an object with a name property */}
+                            <div className={styles.productCategory}>{product.category.name}</div>
                             <div className={styles.productPrice}>₱ {product.price}</div>
                         </div>
                     </div>

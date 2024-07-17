@@ -1,56 +1,63 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './receipt.module.css';
 
-const Receipt = () => {
-  const products = [
-    { id: 1, name: 'Product 1', price: 149, quantity: 2 },
-    { id: 2, name: 'Product 2', price: 299, quantity: 1 },
-    { id: 3, name: 'Product 3', price: 349, quantity: 3 },
-    { id: 4, name: 'Product 4', price: 499, quantity: 1 },
-    { id: 5, name: 'Product 5', price: 199, quantity: 2 },
-  ];
+const Receipt = ({ selectedItems }) => {
+    const calculateAmount = (price, quantity) => {
+        return price * quantity;
+    };
 
-  const calculateAmount = (price, quantity) => {
-    return price * quantity;
-  };
+    const calculateTotal = () => {
+        return selectedItems.reduce((total, item) => total + calculateAmount(item.price, item.quantity), 0);
+    };
 
-  const calculateTotal = () => {
-    return products.reduce((total, product) => total + calculateAmount(product.price, product.quantity), 0);
-  };
+    const navigate = useNavigate();
 
-  return (
-    <div className={styles.receiptContainer}>
-      <p>Order Receipt</p>
-      <table className={styles.receiptTable}>
-        <thead>
-          <tr>
-            <th>Qty</th>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product.id}>
-              <td>{product.quantity}</td>
-              <td>{product.name}</td>
-              <td>₱{product.price}</td>
-              <td>₱{calculateAmount(product.price, product.quantity)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    const handleCreateOrder = () => {
+        if (selectedItems.length > 0) {
+            navigate('/order-history');
+        } else {
+            alert('Please add at least one product to create an order.');
+        }
+    };
 
-      <div className={styles.total}>
-        <div className={styles.divider}>---------------------------------------------------</div>
-        <div className={styles.totalAmount}>
-          <span>TOTAL</span>
-          <span>₱{calculateTotal()}</span>
+    return (
+        <div className={styles.receiptContainer}>
+            <p>Order Receipt</p>
+            <table className={styles.receiptTable}>
+                <thead>
+                    <tr>
+                        <th>Qty</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {selectedItems.map((item, index) => (
+                        <tr key={index}>
+                            <td>{item.quantity}</td>
+                            <td>{item.name}</td>
+                            <td>₱{item.price}</td>
+                            <td>₱{calculateAmount(item.price, item.quantity)}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+
+            <div className={styles.total}>
+                <div className={styles.divider}>---------------------------------------------------</div>
+                <div className={styles.totalAmount}>
+                    <span>TOTAL</span>
+                    <span>₱{calculateTotal()}</span>
+                </div>
+            </div>
+
+            <div className={styles.buttonContainer}>
+                <button className={styles.createOrderButton} onClick={handleCreateOrder}>Create Order</button>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Receipt;

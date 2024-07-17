@@ -10,6 +10,10 @@
     box-sizing: border-box;
 }
 
+.header .logoLink{
+    text-decoration: none;
+}
+
 .sposs {
     display: flex;
     flex-direction: column;
@@ -76,4 +80,10 @@
 .logoutButton img {
     width: 24px;
     height: 24px;
+}
+
+.orderHistoryIcon{
+    font-size: 24px;
+    margin-bottom: 5px;
+    color: #333;
 }

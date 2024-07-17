@@ -14,7 +14,6 @@
     mask: var(--mask);
 }
 
-
 .receiptContainer::before {
     content: '';
     position: absolute;
@@ -60,7 +59,7 @@
     color: rgb(95, 95, 95);
 }
 
-.divider{
+.divider {
     margin-top: 30px;
     margin-bottom: 20px;
 }
@@ -83,4 +82,24 @@
 
 .totalAmount span:last-child {
     text-align: right;
+}
+
+.buttonContainer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.createOrderButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #e8b21e;
+    color: #fff;
+    transition: background-color 0.3s;
+}
+
+.createOrderButton:hover {
+    background-color: #d9a311;
 }

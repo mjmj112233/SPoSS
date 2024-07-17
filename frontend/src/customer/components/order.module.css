@@ -1,0 +1,75 @@
+.orderHistoryContainer {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  width: 75%;
+  margin: 0 auto;
+}
+
+.orderContainer {
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.orderContainer h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.orderContainer p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.orderTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.orderTable th,
+.orderTable td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.orderTable th {
+  font-weight: bold;
+}
+
+.orderTable td {
+  background-color: #fff;
+  color: rgb(95, 95, 95);
+}
+
+.totalAmount {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+  margin-top: 20px;
+}
+
+.addButtonContainer {
+    margin-top: 20px;
+}
+
+.addNewOrderButton {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e9b423;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.addNewOrderButton:hover {
+    background-color: #d9a311;
+}

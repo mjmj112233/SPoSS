@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styles from './product.module.css';
-import sampleProduct from '../assets/sample.png';  // Import default image
+import sampleProduct from '../assets/sample.png'; // Import default image
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
-const Products = ({ searchQuery }) => {
+const Products = ({ searchQuery, addToOrder }) => {
     const [products, setProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
@@ -57,6 +57,19 @@ const Products = ({ searchQuery }) => {
         product.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const handleAddToOrder = () => {
+        if (selectedProduct) {
+            addToOrder({
+                id: selectedProduct.id,
+                name: selectedProduct.name,
+                price: selectedProduct.price,
+                quantity: quantity
+            });
+            setSelectedProduct(null);
+            setQuantity(1);
+        }
+    };
+
     return (
         <div className={styles.mainContainer}>
             <div className={styles.productList}>
@@ -81,7 +94,6 @@ const Products = ({ searchQuery }) => {
                         <img src={selectedProduct.image || sampleProduct} alt={selectedProduct.name} className={styles.productModalImage} />
                         <div className={styles.productModalDetails}>
                             <h2>{selectedProduct.name}</h2>
-                            <div className={styles.productCategory}>{selectedProduct.category.name}</div>
                             <div className={styles.productPrice}>₱ {selectedProduct.price}</div>
                         </div>
 
@@ -99,7 +111,7 @@ const Products = ({ searchQuery }) => {
                                     <button onClick={incrementQuantity}>+</button>
                                 </div>
                             </div>
-                            <button className={styles.addToOrderButton}>
+                            <button className={styles.addToOrderButton} onClick={handleAddToOrder}>
                                 Add to Order
                             </button>
                         </div>

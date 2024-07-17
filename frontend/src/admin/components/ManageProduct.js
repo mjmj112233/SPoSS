@@ -174,12 +174,14 @@ const ManageProduct = () => {
                             <h2>Add Product</h2>
                         </div>
                         <div className={styles.modalBody}>
+                            <label>Product Name</label>
                             <input
                                 type="text"
                                 placeholder="Product Name"
                                 value={newProductName}
                                 onChange={(e) => setNewProductName(e.target.value)}
                             />
+                            <label>Category</label>
                             <select
                                 value={newProductCategory}
                                 onChange={(e) => setNewProductCategory(e.target.value)}
@@ -191,6 +193,7 @@ const ManageProduct = () => {
                                     </option>
                                 ))}
                             </select>
+                            <label>Price</label>
                             <input
                                 type="number"
                                 placeholder="Price"
@@ -216,12 +219,14 @@ const ManageProduct = () => {
                             <h2>Edit Product</h2>
                         </div>
                         <div className={styles.modalBody}>
+                            <label>Product Name</label>
                             <input
                                 type="text"
                                 placeholder="Product Name"
                                 value={newProductName}
                                 onChange={(e) => setNewProductName(e.target.value)}
                             />
+                            <label>Category</label>
                             <select
                                 value={newProductCategory}
                                 onChange={(e) => setNewProductCategory(e.target.value)}
@@ -233,6 +238,7 @@ const ManageProduct = () => {
                                     </option>
                                 ))}
                             </select>
+                            <label>Price</label>
                             <input
                                 type="number"
                                 placeholder="Price"

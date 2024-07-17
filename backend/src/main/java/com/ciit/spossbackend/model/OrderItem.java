@@ -25,6 +25,10 @@ public class OrderItem {
     @Column(nullable = false)
     private Integer quantity;
 
+    /**
+     * Calculates the price of the order item based on the product price and quantity.
+     * This method is triggered before persisting or updating the entity.
+     */
     @PrePersist
     @PreUpdate
     public void calculatePrice() {
@@ -33,7 +37,8 @@ public class OrderItem {
         }
     }
 
-    //getters and setters
+    // Getters and setters
+
     public Long getId() {
         return id;
     }

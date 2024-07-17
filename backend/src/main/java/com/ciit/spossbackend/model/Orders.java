@@ -12,8 +12,8 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column//(nullable = false)
-    private String customer_uid; //idk how to deal with firebase users lol
+    @Column
+    private String customer_uid; // Assuming this is a Firebase user ID
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -25,17 +25,23 @@ public class Orders {
     @Column
     private BigDecimal totalAmount;
 
+    /**
+     * Calculates the total amount based on the order items.
+     * This method is triggered before persisting or updating the entity.
+     */
     @PrePersist
     @PreUpdate
     public void calculateTotalAmount() {
         if (orderItems != null) {
             this.totalAmount = orderItems.stream()
-                    .map(OrderItem::getPrice)
+                    .map(orderItem -> orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
+        } else {
+            this.totalAmount = BigDecimal.ZERO;
         }
     }
 
-    //getters setters
+    // Getters and setters
 
     public Long getId() {
         return id;

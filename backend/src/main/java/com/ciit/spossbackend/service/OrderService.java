@@ -22,25 +22,48 @@ public class OrderService {
         this.productRepository = productRepository;
     }
 
+    /**
+     * Retrieves all orders from the database.
+     *
+     * @return List of all orders.
+     */
     public List<Orders> getAllOrders() {
         return orderRepository.findAll();
     }
 
+    /**
+     * Retrieves an order by its ID.
+     *
+     * @param id The ID of the order to retrieve.
+     * @return The order with the given ID, or null if not found.
+     */
     public Orders getOrderById(Long id) {
         return orderRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Saves an order, including its order items.
+     *
+     * @param order The order to save.
+     * @return The saved order.
+     */
     public Orders saveOrder(Orders order) {
+        // Iterate through order items to set product and calculate prices
         for (OrderItem item : order.getOrderItems()) {
             Optional<Product> product = productRepository.findById(item.getProduct().getId());
             item.setProduct(product.orElse(null));
             item.setOrder(order);
-            item.calculatePrice();
+            item.calculatePrice(); // Calculate price based on product and quantity
         }
-        order.calculateTotalAmount(); // Ensure total amount calculation is invoked
+        order.calculateTotalAmount(); // Calculate total amount for the order
         return orderRepository.save(order);
     }
 
+    /**
+     * Deletes an order by its ID.
+     *
+     * @param id The ID of the order to delete.
+     */
     public void deleteOrder(Long id) {
         orderRepository.deleteById(id);
     }

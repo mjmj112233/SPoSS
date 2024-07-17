@@ -21,7 +21,9 @@ const ManageCategory = () => {
                 throw new Error('Failed to fetch categories');
             }
             const data = await response.json();
-            setCategories(data);
+            // Filter out categories where deleted is true
+            const activeCategories = data.filter(category => !category.deleted);
+            setCategories(activeCategories);
         } catch (error) {
             console.error('Error fetching categories:', error);
         }

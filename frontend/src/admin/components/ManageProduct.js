@@ -26,7 +26,9 @@ const ManageProduct = () => {
                 throw new Error('Failed to fetch products');
             }
             const data = await response.json();
-            setProducts(data);
+            // Filter out products where deleted is true
+            const activeProducts = data.filter(product => !product.deleted);
+            setProducts(activeProducts);
         } catch (error) {
             console.error('Error fetching products:', error);
         }

@@ -15,9 +15,38 @@ const Receipt = ({ selectedItems, updateItemQuantity, removeItem }) => {
 
     const navigate = useNavigate();
 
-    const handleCreateOrder = () => {
+    const handleCreateOrder = async () => {
         if (selectedItems.length > 0) {
-            navigate('/order-history');
+            const orderData = {
+                customer_uid: 'some-customer-uid', // Replace this with actual customer UID if available
+                orderItems: selectedItems.map(item => ({
+                    product: { id: item.id },
+                    quantity: item.quantity,
+                    price: calculateAmount(item.price, item.quantity)
+                })),
+                orderDate: new Date().toISOString(),
+                totalAmount: calculateTotal()
+            };
+
+            try {
+                const response = await fetch('https://sposs-backend.onrender.com/api/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to create order');
+                }
+
+                // Order creation was successful, navigate to order history
+                navigate('/order-history');
+            } catch (error) {
+                console.error('Error creating order:', error);
+                alert('Failed to create order. Please try again.');
+            }
         } else {
             alert('Please add at least one product to create an order.');
         }

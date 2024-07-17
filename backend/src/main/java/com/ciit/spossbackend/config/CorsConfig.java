@@ -20,7 +20,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://sposs-67a96.web.app") // Allow requests from reactjs deployment on firebase
+                .allowedOrigins("*") // Allow requests from reactjs deployment on firebase
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS"); // Allow specified HTTP methods
     }
 }

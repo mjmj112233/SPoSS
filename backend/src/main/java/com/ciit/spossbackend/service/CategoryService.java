@@ -2,6 +2,7 @@ package com.ciit.spossbackend.service;
 
 import com.ciit.spossbackend.model.Category;
 import com.ciit.spossbackend.repository.CategoryRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,12 +16,12 @@ public class CategoryService {
     }
 
     /**
-     * Retrieves all categories from the database.
+     * Retrieves all categories (excluding deleted ones) from the database.
      *
      * @return List of all categories.
      */
     public List<Category> getAllCategories() {
-        return repository.findAll();
+        return repository.findByDeletedFalse();
     }
 
     /**
@@ -30,7 +31,8 @@ public class CategoryService {
      * @return The category with the given ID, or null if not found.
      */
     public Category getCategoryById(Long id) {
-        return repository.findById(id).orElse(null);
+        return repository.findById(id)
+                .orElse(null);
     }
 
     /**
@@ -44,11 +46,14 @@ public class CategoryService {
     }
 
     /**
-     * Deletes a category by its ID.
+     * Soft deletes a category by its ID (sets deleted flag to true).
      *
-     * @param id The ID of the category to delete.
+     * @param id The ID of the category to soft delete.
      */
-    public void deleteCategoryById(Long id) {
-        repository.deleteById(id);
+    public void softDeleteCategory(Long id) {
+        Category category = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Category with id " + id + " not found"));
+        category.setDeleted(true); // Set deleted flag to true
+        repository.save(category); // Save the updated category
     }
 }

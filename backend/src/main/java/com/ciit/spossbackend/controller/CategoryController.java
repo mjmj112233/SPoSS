@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Controller class for handling Category-related API endpoints.
- */
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
@@ -22,7 +19,7 @@ public class CategoryController {
 
     /**
      * GET endpoint to retrieve all categories.
-     * 
+     *
      * @return List of all categories.
      */
     @GetMapping
@@ -32,7 +29,7 @@ public class CategoryController {
 
     /**
      * GET endpoint to retrieve a category by its ID.
-     * 
+     *
      * @param id The ID of the category to retrieve.
      * @return The category with the specified ID.
      */
@@ -43,7 +40,7 @@ public class CategoryController {
 
     /**
      * POST endpoint to create a new category.
-     * 
+     *
      * @param category The category object to be created.
      * @return The created category object.
      */
@@ -54,7 +51,7 @@ public class CategoryController {
 
     /**
      * PUT endpoint to update an existing category.
-     * 
+     *
      * @param id              The ID of the category to update.
      * @param categoryDetails The updated category details.
      * @return The updated category object.
@@ -69,12 +66,12 @@ public class CategoryController {
     }
 
     /**
-     * DELETE endpoint to delete a category by its ID.
-     * 
-     * @param id The ID of the category to delete.
+     * Soft deletes a category by its ID.
+     *
+     * @param id The ID of the category to soft delete.
      */
     @DeleteMapping("/{id}")
-    public void deleteCategoryById(@PathVariable Long id) {
-        service.deleteCategoryById(id);
+    public void softDeleteCategory(@PathVariable Long id) {
+        service.softDeleteCategory(id);
     }
 }

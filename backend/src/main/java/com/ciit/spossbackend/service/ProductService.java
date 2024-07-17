@@ -2,6 +2,9 @@ package com.ciit.spossbackend.service;
 
 import com.ciit.spossbackend.model.Product;
 import com.ciit.spossbackend.repository.ProductRepository;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -64,11 +67,15 @@ public class ProductService {
     }
 
     /**
-     * Deletes a product by its ID.
+     * Soft deletes a product by its ID (sets deleted flag to true).
      *
-     * @param id The ID of the product to delete.
+     * @param id The ID of the product to soft delete.
      */
-    public void deleteProduct(Long id) {
-        repository.deleteById(id);
+    public void softDeleteProduct(Long productId) {
+        Product product = repository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product with id " + productId + " not found"));
+
+        product.setDeleted(true); // Set deleted flag to true
+        repository.save(product); // Save the updated product
     }
 }

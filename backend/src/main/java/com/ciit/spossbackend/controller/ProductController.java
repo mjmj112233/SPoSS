@@ -145,6 +145,6 @@ public class ProductController {
      */
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
-        service.deleteProduct(id);
+        service.softDeleteProduct(id);
     }
 }

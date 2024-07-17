@@ -23,6 +23,9 @@ public class Product {
     @Column(nullable = true)
     private byte[] image;
 
+    @Column
+    private boolean deleted = false; // Soft delete flag
+
     //Getters and Setters
 
     public Long getId() {
@@ -63,5 +66,13 @@ public class Product {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

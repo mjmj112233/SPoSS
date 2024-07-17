@@ -11,7 +11,10 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
-    //Getters and Setters
+    @Column(nullable = false)
+    private boolean deleted = false; // Soft delete flag
+
+    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -27,5 +30,13 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

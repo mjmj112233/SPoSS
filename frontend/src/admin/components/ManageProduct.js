@@ -80,9 +80,9 @@ const ManageProduct = () => {
             formData.append('name', newProductName);
             formData.append('category', newProductCategory); // Assuming category ID is sent as a string
             formData.append('price', newProductPrice);
-            
+
             // Assign sampleProduct for the image
-            formData.append('image', sampleProduct); 
+            formData.append('image', sampleProduct);
 
             const response = await fetch('http://localhost:8080/api/products', {
                 method: 'POST',
@@ -119,10 +119,10 @@ const ManageProduct = () => {
         try {
             const formData = new FormData();
             formData.append('name', newProductName);
-            formData.append('category', newProductCategory); 
+            formData.append('category', newProductCategory);
             formData.append('price', newProductPrice);
 
-            formData.append('image', editingProduct.image || sampleProduct); 
+            formData.append('image', editingProduct.image || sampleProduct);
 
             const response = await fetch(`http://localhost:8080/api/products/${editingProduct.id}`, {
                 method: 'PUT',
@@ -134,7 +134,7 @@ const ManageProduct = () => {
             const updatedProduct = { ...editingProduct, name: newProductName, category: { id: newProductCategory }, price: parseFloat(newProductPrice) };
             const updatedProducts = products.map(prod => (prod.id === updatedProduct.id ? updatedProduct : prod));
             setProducts(updatedProducts);
-            closeEditModal(); 
+            closeEditModal();
         } catch (error) {
             console.error('Error updating product:', error);
         }
@@ -142,6 +142,7 @@ const ManageProduct = () => {
 
     return (
         <div className={styles.mainContainer}>
+            <h2>Products</h2>
             <div className={styles.productList}>
                 {products.map((product) => (
                     <div key={product.id} className={styles.productContainer}>

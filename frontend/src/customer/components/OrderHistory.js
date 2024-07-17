@@ -36,35 +36,39 @@ const OrderHistory = () => {
 
   return (
     <div className={styles.orderHistoryContainer}>
-      {orders.map(order => (
-        <div key={order.id} className={styles.orderContainer}>
-          <h2>Order ID: {order.id}</h2>
-          <p>Order Date: {new Date(order.orderDate).toLocaleDateString()}</p>
-          <table className={styles.orderTable}>
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Unit Price</th>
-                <th>Total Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {order.orderItems.map(item => (
-                <tr key={item.id}>
-                  <td>{item.product.name}</td>
-                  <td>{item.quantity}</td>
-                  <td>₱{item.product.price.toFixed(2)}</td>
-                  <td>₱{item.price.toFixed(2)}</td>
+      {orders.length === 0 ? (
+        <p>No orders found.</p>
+      ) : (
+        orders.map(order => (
+          <div key={order.id} className={styles.orderContainer}>
+            <h2>Order ID: {order.id}</h2>
+            <p>Order Date: {new Date(order.orderDate).toLocaleDateString()}</p>
+            <table className={styles.orderTable}>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Quantity</th>
+                  <th>Unit Price</th>
+                  <th>Total Price</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className={styles.totalAmount}>
-            <span>Total Amount: ₱{order.totalAmount.toFixed(2)}</span>
+              </thead>
+              <tbody>
+                {order.orderItems.map(item => (
+                  <tr key={item.id}>
+                    <td>{item.product.name}</td>
+                    <td>{item.quantity}</td>
+                    <td>₱{item.product.price.toFixed(2)}</td>
+                    <td>₱{item.price.toFixed(2)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className={styles.totalAmount}>
+              <span>Total Amount: ₱{order.totalAmount.toFixed(2)}</span>
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      )}
 
       <div className={styles.addButtonContainer}>
         <Link to="/" className={styles.addNewOrderButton}>Add New Order</Link>

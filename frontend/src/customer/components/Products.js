@@ -8,6 +8,7 @@ const Products = ({ searchQuery, addToOrder }) => {
     const [products, setProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchProducts();
@@ -21,6 +22,7 @@ const Products = ({ searchQuery, addToOrder }) => {
             }
             const data = await response.json();
             setProducts(data);
+            setLoading(false); // Set loading to false after products are fetched
         } catch (error) {
             console.error('Error fetching products:', error);
         }
@@ -72,6 +74,8 @@ const Products = ({ searchQuery, addToOrder }) => {
 
     return (
         <div className={styles.mainContainer}>
+            {loading && <p>Loading products...</p>}
+            {!loading && filteredProducts.length === 0 && <p>No products found.</p>}
             <div className={styles.productList}>
                 {filteredProducts.map((product) => (
                     <div key={product.id} className={styles.productContainer} onClick={() => handleProductClick(product.id)}>

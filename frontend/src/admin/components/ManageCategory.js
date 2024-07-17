@@ -16,7 +16,7 @@ const ManageCategory = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/categories');
+            const response = await fetch('https://sposs-backend.onrender.com/api/categories');
             if (!response.ok) {
                 throw new Error('Failed to fetch categories');
             }
@@ -50,7 +50,7 @@ const ManageCategory = () => {
 
     const addCategory = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/categories', {
+            const response = await fetch('https://sposs-backend.onrender.com/api/categories', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ const ManageCategory = () => {
     const deleteCategory = async (category) => {
         if (window.confirm(`Are you sure you want to delete ${category.name}?`)) {
             try {
-                const response = await fetch(`http://localhost:8080/api/categories/${category.id}`, {
+                const response = await fetch(`https://sposs-backend.onrender.com/api/categories/${category.id}`, {
                     method: 'DELETE',
                 });
                 if (!response.ok) {
@@ -86,7 +86,7 @@ const ManageCategory = () => {
 
     const updateCategory = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/categories/${editingCategory.id}`, {
+            const response = await fetch(`https://sposs-backend.onrender.com/api/categories/${editingCategory.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

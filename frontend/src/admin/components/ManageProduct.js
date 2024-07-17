@@ -21,7 +21,7 @@ const ManageProduct = () => {
 
     const fetchProducts = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/products');
+            const response = await fetch('https://sposs-backend.onrender.com/api/products');
             if (!response.ok) {
                 throw new Error('Failed to fetch products');
             }
@@ -34,7 +34,7 @@ const ManageProduct = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/categories');
+            const response = await fetch('https://sposs-backend.onrender.com/api/categories');
             if (!response.ok) {
                 throw new Error('Failed to fetch categories');
             }
@@ -84,7 +84,7 @@ const ManageProduct = () => {
             // Assign sampleProduct for the image
             formData.append('image', sampleProduct);
 
-            const response = await fetch('http://localhost:8080/api/products', {
+            const response = await fetch('https://sposs-backend.onrender.com/api/products', {
                 method: 'POST',
                 body: formData,
             });
@@ -102,7 +102,7 @@ const ManageProduct = () => {
     const deleteProduct = async (product) => {
         if (window.confirm(`Are you sure you want to delete ${product.name}?`)) {
             try {
-                const response = await fetch(`http://localhost:8080/api/products/${product.id}`, {
+                const response = await fetch(`https://sposs-backend.onrender.com/api/products/${product.id}`, {
                     method: 'DELETE',
                 });
                 if (!response.ok) {
@@ -124,7 +124,7 @@ const ManageProduct = () => {
 
             formData.append('image', editingProduct.image || sampleProduct);
 
-            const response = await fetch(`http://localhost:8080/api/products/${editingProduct.id}`, {
+            const response = await fetch(`https://sposs-backend.onrender.com/api/products/${editingProduct.id}`, {
                 method: 'PUT',
                 body: formData,
             });

@@ -1,0 +1,86 @@
+.receiptContainer {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    width: 75%;
+    height: 75vh;
+    margin: 0 auto;
+    --mask: 
+        conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top/12px 51% repeat-x,
+        conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom/12px 51% repeat-x;
+    -webkit-mask: var(--mask);
+    mask: var(--mask);
+}
+
+
+.receiptContainer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    --mask:
+        conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top/12px 51% repeat-x,
+        conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom/12px 51% repeat-x;
+    -webkit-mask: var(--mask);
+    mask: var(--mask);
+    background-color: #ffffff;
+    border-radius: 8px;
+}
+
+.receiptContainer p {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.receiptTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.receiptTable th,
+.receiptTable td {
+    padding: 10px;
+    text-align: center;
+}
+
+.receiptTable th {
+    font-weight: bold;
+}
+
+.receiptTable td {
+    background-color: #fff;
+    color: rgb(95, 95, 95);
+}
+
+.divider{
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.total {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.totalAmount {
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+}
+
+.totalAmount span:first-child {
+    text-align: left;
+}
+
+.totalAmount span:last-child {
+    text-align: right;
+}

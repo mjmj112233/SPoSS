@@ -27,6 +27,7 @@ const Login = () => {
   return (
     <div className={styles.loginForm}>
       <h2>SPoSS Login</h2>
+      <p style={{ color: 'gray', textAlign: 'center', fontSize: '12px', marginBottom: '30px' }}>Admin access: [Email: sposs.admin@email.com] [Password: admin123]</p>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Email</label>

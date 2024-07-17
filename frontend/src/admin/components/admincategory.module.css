@@ -47,6 +47,7 @@
 .addCategoryButton {
     color: #FFC72C;
     font-size: 24px;
+    transition: color 0.3s; 
 }
 
 .modal {
@@ -150,7 +151,13 @@
     color: #e1af27;
     margin-left: 5px;
     z-index: 1;
+    transition: color 0.3s; 
 }
+
+.editButton:hover, .deleteButton:hover, .addCategoryButton:hover {
+    color: #bc3922;
+}
+
 
 .deleteButton {
     right: 35px;

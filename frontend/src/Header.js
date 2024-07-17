@@ -4,6 +4,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './firebase/config';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
+import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import styles from './header.module.css';
 import logoutIcon from './assets/logout.svg';
 
@@ -62,7 +63,8 @@ const Header = () => {
         )}
         {user ? (
           <div className={styles.logoutButton} onClick={handleLogout}>
-            <img src={logoutIcon} alt="Logout" />
+            {/* <img src={logoutIcon} alt="Logout" /> */}
+            <FontAwesomeIcon icon={faRightFromBracket} className={styles.logoutIcon} />
           </div>
         ) : (
           <div className={styles.loginRegister}>

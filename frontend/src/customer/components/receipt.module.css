@@ -103,3 +103,14 @@
 .createOrderButton:hover {
     background-color: #d9a311;
 }
+
+.icon {
+    color: #e1af27;
+    cursor: pointer; 
+    transition: color 0.3s; 
+    padding: 0 5px;
+}
+
+.icon:hover {
+    color: #bc3922; 
+}

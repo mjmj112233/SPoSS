@@ -16,6 +16,18 @@ const HomePage = () => {
         setSelectedItems([...selectedItems, item]);
     };
 
+    const updateItemQuantity = (index, newQuantity) => {
+        setSelectedItems(prevItems => {
+            const updatedItems = [...prevItems];
+            updatedItems[index].quantity = newQuantity;
+            return updatedItems;
+        });
+    };
+
+    const removeItem = (index) => {
+        setSelectedItems(prevItems => prevItems.filter((item, i) => i !== index));
+    };
+
     return (
         <div className="container">
             <div className="products">
@@ -23,7 +35,11 @@ const HomePage = () => {
                 <Products searchQuery={searchQuery} addToOrder={addToOrder} />
             </div>
             <div className="receipt">
-                <Receipt selectedItems={selectedItems} />
+                <Receipt
+                    selectedItems={selectedItems}
+                    updateItemQuantity={updateItemQuantity}
+                    removeItem={removeItem}
+                />
             </div>
         </div>
     );

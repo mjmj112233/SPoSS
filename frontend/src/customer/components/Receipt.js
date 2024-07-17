@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './receipt.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMinusCircle, faPlusCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
-const Receipt = ({ selectedItems }) => {
+const Receipt = ({ selectedItems, updateItemQuantity, removeItem }) => {
     const calculateAmount = (price, quantity) => {
         return price * quantity;
     };
@@ -21,6 +23,14 @@ const Receipt = ({ selectedItems }) => {
         }
     };
 
+    const handleQuantityChange = (index, newQuantity) => {
+        if (newQuantity <= 0) {
+            removeItem(index); 
+        } else {
+            updateItemQuantity(index, newQuantity);
+        }
+    };
+
     return (
         <div className={styles.receiptContainer}>
             <p>Order Receipt</p>
@@ -31,15 +41,35 @@ const Receipt = ({ selectedItems }) => {
                         <th>Product</th>
                         <th>Price</th>
                         <th>Amount</th>
+                        {/* <th>Actions</th> */}
                     </tr>
                 </thead>
                 <tbody>
                     {selectedItems.map((item, index) => (
                         <tr key={index}>
-                            <td>{item.quantity}</td>
+                            <td>
+                                <FontAwesomeIcon
+                                    icon={faMinusCircle}
+                                    className={styles.icon}
+                                    onClick={() => handleQuantityChange(index, item.quantity - 1)}
+                                />
+                                {item.quantity}
+                                <FontAwesomeIcon
+                                    icon={faPlusCircle}
+                                    className={styles.icon}
+                                    onClick={() => handleQuantityChange(index, item.quantity + 1)}
+                                />
+                            </td>
                             <td>{item.name}</td>
                             <td>₱{item.price}</td>
                             <td>₱{calculateAmount(item.price, item.quantity)}</td>
+                            <td>
+                                <FontAwesomeIcon
+                                    icon={faTrashAlt}
+                                    className={styles.icon}
+                                    onClick={() => removeItem(index)}
+                                />
+                            </td>
                         </tr>
                     ))}
                 </tbody>

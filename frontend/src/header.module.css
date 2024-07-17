@@ -54,6 +54,7 @@
 .categories span {
     margin-right: 110px;
     cursor: pointer;
+    transition: color 0.3s;
 }
 
 .navigation {
@@ -82,8 +83,13 @@
     height: 24px;
 }
 
-.orderHistoryIcon{
+.orderHistoryIcon, .logoutIcon{
     font-size: 24px;
     margin-bottom: 5px;
     color: #333;
+    transition: color 0.3s;
+}
+
+.orderHistoryIcon:hover, .logoutIcon:hover {
+    color: #e8af12;
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './product.module.css';
-import sampleProduct from '../assets/sample.png'; // Import default image
+import sampleProduct from '../assets/sample.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 

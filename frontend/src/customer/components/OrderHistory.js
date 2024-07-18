@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './order.module.css';
 
+//Component to display the order history.
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Fetches the orders from the backend 
     const fetchOrders = async () => {
       try {
         const response = await fetch('https://sposs-backend.onrender.com/api/orders');
@@ -69,7 +71,6 @@ const OrderHistory = () => {
           </div>
         ))
       )}
-
       <div className={styles.addButtonContainer}>
         <Link to="/" className={styles.addNewOrderButton}>Add New Order</Link>
       </div>

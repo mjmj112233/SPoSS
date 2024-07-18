@@ -1,0 +1,27 @@
+.adminToCustomerButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #e8af12;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.adminToCustomerButton .buttonIcon {
+    color: white;
+    font-size: 24px;
+}
+
+.label {
+    position: fixed;
+    bottom: 25px;
+    right: 80px;
+    font-size: 12px;
+    color: rgb(119, 119, 119);
+    font-style: italic;
+}

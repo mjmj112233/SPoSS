@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './search.module.css';
 
+//Search bar component for filtering products
 const Search = ({ setSearchQuery }) => {
   const [query, setQuery] = useState('');
 

@@ -4,6 +4,7 @@ import styles from './receipt.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinusCircle, faPlusCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
+//Component to display and manage the receipt of selected items
 const Receipt = ({ selectedItems, updateItemQuantity, removeItem }) => {
     const calculateAmount = (price, quantity) => {
         return price * quantity;
@@ -14,7 +15,8 @@ const Receipt = ({ selectedItems, updateItemQuantity, removeItem }) => {
     };
 
     const navigate = useNavigate();
-
+    
+    // Handles order creation through a button
     const handleCreateOrder = async () => {
         if (selectedItems.length > 0) {
             const orderData = {

@@ -6,13 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import styles from './header.module.css';
-import logoutIcon from './assets/logout.svg';
 
 const Header = () => {
   const [user] = useAuthState(auth);
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
+  // useEffect hook to fetch categories when the component renders
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -21,7 +21,7 @@ const Header = () => {
           throw new Error('Failed to fetch categories');
         }
         const data = await response.json();
-        setCategories(data);
+        setCategories(data); // Set fetched categories to state
       } catch (error) {
         console.error('Error fetching categories:', error);
       }
@@ -30,10 +30,12 @@ const Header = () => {
     fetchCategories();
   }, []);
 
+  // Function to handle user logout
   const handleLogout = () => {
     auth.signOut();
   };
 
+  // when logo is clicked, project navigates to the home page
   const handleLogoClick = () => {
     navigate('/');
   };
@@ -63,7 +65,6 @@ const Header = () => {
         )}
         {user ? (
           <div className={styles.logoutButton} onClick={handleLogout}>
-            {/* <img src={logoutIcon} alt="Logout" /> */}
             <FontAwesomeIcon icon={faRightFromBracket} className={styles.logoutIcon} />
           </div>
         ) : (

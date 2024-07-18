@@ -13,7 +13,7 @@ public class Product {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable=false)
+    @JoinColumn(name = "category_id", nullable=true)
     private Category category;
 
     @Column

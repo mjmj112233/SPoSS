@@ -4,6 +4,7 @@ import sampleProduct from '../assets/sample.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus, faTimesCircle, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
+// Component for managing products
 const ManageProduct = () => {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -27,6 +28,7 @@ const ManageProduct = () => {
                 throw new Error('Failed to fetch products');
             }
             const data = await response.json();
+            // Filter out products where deleted is true
             const activeProducts = data.filter(product => !product.deleted);
             setProducts(activeProducts);
         } catch (error) {
@@ -49,37 +51,49 @@ const ManageProduct = () => {
     };
 
     // Open and close modals
-    const openModal = () => setShowModal(true);
+    const openModal = () => {
+        setShowModal(true);
+    };
+
     const closeModal = () => {
         setShowModal(false);
-        setNewProductName('');
-        setNewProductCategory('');
-        setNewProductPrice('');
+        resetForm();
     };
+
     const openEditModal = (product) => {
         setEditingProduct(product);
         setNewProductName(product.name);
-        setNewProductCategory(product.categoryId);
-        setNewProductPrice(product.price);
+        setNewProductCategory(product.category.id); // Assuming product.category is an object with an id property
+        setNewProductPrice(product.price.toString());
         setEditModal(true);
     };
+
     const closeEditModal = () => {
         setEditingProduct(null);
+        resetForm();
+        setEditModal(false);
+    };
+
+    const resetForm = () => {
         setNewProductName('');
         setNewProductCategory('');
         setNewProductPrice('');
-        setEditModal(false);
     };
 
     // Add a new product
     const addProduct = async () => {
         try {
+            const formData = new FormData();
+            formData.append('name', newProductName);
+            formData.append('category', newProductCategory); // Assuming category ID is sent as a string
+            formData.append('price', newProductPrice);
+
+            // Assign sampleProduct for the image
+            formData.append('image', sampleProduct);
+
             const response = await fetch('https://sposs-backend.onrender.com/api/products', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name: newProductName, categoryId: newProductCategory, price: newProductPrice }),
+                body: formData,
             });
             if (!response.ok) {
                 throw new Error('Failed to add product');
@@ -112,17 +126,21 @@ const ManageProduct = () => {
     // Update an existing product
     const updateProduct = async () => {
         try {
+            const formData = new FormData();
+            formData.append('name', newProductName);
+            formData.append('category', newProductCategory);
+            formData.append('price', newProductPrice);
+
+            formData.append('image', editingProduct.image || sampleProduct);
+
             const response = await fetch(`https://sposs-backend.onrender.com/api/products/${editingProduct.id}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name: newProductName, categoryId: newProductCategory, price: newProductPrice }),
+                body: formData,
             });
             if (!response.ok) {
                 throw new Error('Failed to update product');
             }
-            const updatedProduct = { ...editingProduct, name: newProductName, categoryId: newProductCategory, price: newProductPrice };
+            const updatedProduct = { ...editingProduct, name: newProductName, category: { id: newProductCategory }, price: parseFloat(newProductPrice) };
             const updatedProducts = products.map(prod => (prod.id === updatedProduct.id ? updatedProduct : prod));
             setProducts(updatedProducts);
             closeEditModal();
@@ -143,20 +161,19 @@ const ManageProduct = () => {
                         <button className={styles.deleteButton} onClick={() => deleteProduct(product)}>
                             <FontAwesomeIcon icon={faTrashAlt} />
                         </button>
-                        <div className={styles.productImage}>
-                            <img src={sampleProduct} alt={product.name} />
-                        </div>
+                        <img src={product.image || sampleProduct} alt={product.name} className={styles.productImage} />
                         <div className={styles.productName}>{product.name}</div>
-                        <div className={styles.productCategory}>{categories.find(cat => cat.id === product.categoryId)?.name}</div>
-                        <div className={styles.productPrice}>${product.price}</div>
+                        <div className={styles.productDetails}>
+                            <div className={styles.productCategory}>{product.category.name}</div> {/* Assuming category is an object with a name property */}
+                            <div className={styles.productPrice}>₱ {product.price}</div>
+                        </div>
                     </div>
                 ))}
                 <div className={styles.addProductContainer} onClick={openModal}>
-                    <FontAwesomeIcon icon={faCirclePlus} className={styles.addProductButton} />
+                    <FontAwesomeIcon icon={faCirclePlus} className={styles.addButton} />
                 </div>
             </div>
 
-            {/* Add Product Modal */}
             {showModal && (
                 <div className={styles.modal}>
                     <div className={styles.modalContent}>
@@ -167,12 +184,14 @@ const ManageProduct = () => {
                             <h2>Add Product</h2>
                         </div>
                         <div className={styles.modalBody}>
+                            <label>Product Name</label>
                             <input
                                 type="text"
                                 placeholder="Product Name"
                                 value={newProductName}
                                 onChange={(e) => setNewProductName(e.target.value)}
                             />
+                            <label>Category</label>
                             <select
                                 value={newProductCategory}
                                 onChange={(e) => setNewProductCategory(e.target.value)}
@@ -184,6 +203,7 @@ const ManageProduct = () => {
                                     </option>
                                 ))}
                             </select>
+                            <label>Price</label>
                             <input
                                 type="number"
                                 placeholder="Price"
@@ -199,7 +219,6 @@ const ManageProduct = () => {
                 </div>
             )}
 
-            {/* Edit Product Modal */}
             {editModal && (
                 <div className={styles.modal}>
                     <div className={styles.modalContent}>
@@ -210,12 +229,14 @@ const ManageProduct = () => {
                             <h2>Edit Product</h2>
                         </div>
                         <div className={styles.modalBody}>
+                            <label>Product Name</label>
                             <input
                                 type="text"
                                 placeholder="Product Name"
                                 value={newProductName}
                                 onChange={(e) => setNewProductName(e.target.value)}
                             />
+                            <label>Category</label>
                             <select
                                 value={newProductCategory}
                                 onChange={(e) => setNewProductCategory(e.target.value)}
@@ -227,6 +248,7 @@ const ManageProduct = () => {
                                     </option>
                                 ))}
                             </select>
+                            <label>Price</label>
                             <input
                                 type="number"
                                 placeholder="Price"

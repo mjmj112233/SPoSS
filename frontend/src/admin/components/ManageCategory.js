@@ -3,6 +3,7 @@ import styles from './admincategory.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTimesCircle, faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
+//Component for managing categories
 const ManageCategory = () => {
     const [categories, setCategories] = useState([]);
     const [showModal, setShowModal] = useState(false);

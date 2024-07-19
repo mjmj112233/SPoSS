@@ -56,9 +56,6 @@ public class OrderItemService {
     public OrderItem updateOrderItem(Long id, OrderItem orderItemDetails) {
         OrderItem orderItem = getOrderItemById(id);
         if (orderItem != null) {
-            // Update fields of orderItem based on orderItemDetails
-            // Example: orderItem.setQuantity(orderItemDetails.getQuantity());
-            // Ensure necessary fields are updated according to your application logic
             return orderItemRepository.save(orderItem);
         }
         return null; // Handle case where order item with given id is not found

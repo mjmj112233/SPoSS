@@ -21,7 +21,7 @@ Welcome to SPoSS (Simple Point of Sales System)! 🎉 This project is designed t
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/sposs.git
+git clone https://github.com/mjmj112233/SPoSS
 cd sposs
 ```
 

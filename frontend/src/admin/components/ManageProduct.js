@@ -51,7 +51,8 @@ const ManageProduct = () => {
     };
 
     // Open and close modals
-    const openModal = () => {
+    const openModal = async () => {
+        await fetchCategories();
         setShowModal(true);
     };
 
@@ -60,7 +61,8 @@ const ManageProduct = () => {
         resetForm();
     };
 
-    const openEditModal = (product) => {
+    const openEditModal = async (product) => {
+        await fetchCategories(); 
         setEditingProduct(product);
         setNewProductName(product.name);
         setNewProductCategory(product.category.id); // Assuming product.category is an object with an id property

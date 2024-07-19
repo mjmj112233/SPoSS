@@ -3,7 +3,6 @@ import styles from './admincategory.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTimesCircle, faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
-//Component for managing categories
 const ManageCategory = () => {
     const [categories, setCategories] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -15,7 +14,6 @@ const ManageCategory = () => {
         fetchCategories();
     }, []);
 
-    // Fetch categories from the backend
     const fetchCategories = async () => {
         try {
             const response = await fetch('https://sposs-backend.onrender.com/api/categories');
@@ -23,6 +21,7 @@ const ManageCategory = () => {
                 throw new Error('Failed to fetch categories');
             }
             const data = await response.json();
+            // Filter out categories where deleted is true
             const activeCategories = data.filter(category => !category.deleted);
             setCategories(activeCategories);
         } catch (error) {
@@ -30,24 +29,27 @@ const ManageCategory = () => {
         }
     };
 
-    // Open and close modals
-    const openModal = () => setShowModal(true);
+    const openModal = () => {
+        setShowModal(true);
+    };
+
     const closeModal = () => {
         setShowModal(false);
         setNewCategoryName('');
     };
+
     const openEditModal = (category) => {
         setEditingCategory(category);
         setNewCategoryName(category.name);
         setEditModal(true);
     };
+
     const closeEditModal = () => {
         setEditingCategory(null);
         setNewCategoryName('');
         setEditModal(false);
     };
 
-    // Add a new category
     const addCategory = async () => {
         try {
             const response = await fetch('https://sposs-backend.onrender.com/api/categories', {
@@ -68,7 +70,6 @@ const ManageCategory = () => {
         }
     };
 
-    // Delete a category
     const deleteCategory = async (category) => {
         if (window.confirm(`Are you sure you want to delete ${category.name}?`)) {
             try {
@@ -85,7 +86,6 @@ const ManageCategory = () => {
         }
     };
 
-    // Update an existing category
     const updateCategory = async () => {
         try {
             const response = await fetch(`https://sposs-backend.onrender.com/api/categories/${editingCategory.id}`, {
@@ -107,11 +107,6 @@ const ManageCategory = () => {
         }
     };
 
-    // Re-fetch categories whenever the categories state changes
-    useEffect(() => {
-        fetchCategories(); 
-    }, [categories]); 
-
     return (
         <div className={styles.mainContainer}>
             <h2>Categories</h2>
@@ -132,7 +127,6 @@ const ManageCategory = () => {
                 </div>
             </div>
 
-            {/* Add Category Modal */}
             {showModal && (
                 <div className={styles.modal}>
                     <div className={styles.modalContent}>
@@ -158,7 +152,6 @@ const ManageCategory = () => {
                 </div>
             )}
 
-            {/* Edit Category Modal */}
             {editModal && (
                 <div className={styles.modal}>
                     <div className={styles.modalContent}>

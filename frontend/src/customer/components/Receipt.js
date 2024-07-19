@@ -4,17 +4,21 @@ import styles from './receipt.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinusCircle, faPlusCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
+// Component to display and manage the receipt of selected items
 const Receipt = ({ selectedItems, updateItemQuantity, removeItem }) => {
+    // Function to calculate the amount for each item based on price and quantity
     const calculateAmount = (price, quantity) => {
-        return price * quantity;
+        return (price * quantity).toFixed(2);
     };
 
+    // Function to calculate the total amount for all selected items
     const calculateTotal = () => {
-        return selectedItems.reduce((total, item) => total + calculateAmount(item.price, item.quantity), 0);
+        return selectedItems.reduce((total, item) => total + parseFloat(calculateAmount(item.price, item.quantity)), 0).toFixed(2);
     };
 
     const navigate = useNavigate();
-
+    
+    // Handles order creation through a button
     const handleCreateOrder = async () => {
         if (selectedItems.length > 0) {
             const orderData = {
@@ -52,6 +56,7 @@ const Receipt = ({ selectedItems, updateItemQuantity, removeItem }) => {
         }
     };
 
+    // Handles changing the quantity of an item
     const handleQuantityChange = (index, newQuantity) => {
         if (newQuantity <= 0) {
             removeItem(index); 
@@ -90,7 +95,7 @@ const Receipt = ({ selectedItems, updateItemQuantity, removeItem }) => {
                                 />
                             </td>
                             <td>{item.name}</td>
-                            <td>₱{item.price}</td>
+                            <td>₱{parseFloat(item.price).toFixed(2)}</td>
                             <td>₱{calculateAmount(item.price, item.quantity)}</td>
                             <td>
                                 <FontAwesomeIcon

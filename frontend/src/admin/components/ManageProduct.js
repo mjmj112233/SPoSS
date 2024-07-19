@@ -4,6 +4,7 @@ import sampleProduct from '../assets/sample.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus, faTimesCircle, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
+// Component for managing products
 const ManageProduct = () => {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -19,6 +20,7 @@ const ManageProduct = () => {
         fetchCategories();
     }, []);
 
+    // Fetch products from the backend
     const fetchProducts = async () => {
         try {
             const response = await fetch('https://sposs-backend.onrender.com/api/products');
@@ -34,6 +36,7 @@ const ManageProduct = () => {
         }
     };
 
+    // Fetch categories from the backend
     const fetchCategories = async () => {
         try {
             const response = await fetch('https://sposs-backend.onrender.com/api/categories');
@@ -47,6 +50,7 @@ const ManageProduct = () => {
         }
     };
 
+    // Open and close modals
     const openModal = () => {
         setShowModal(true);
     };
@@ -76,6 +80,7 @@ const ManageProduct = () => {
         setNewProductPrice('');
     };
 
+    // Add a new product
     const addProduct = async () => {
         try {
             const formData = new FormData();
@@ -101,6 +106,7 @@ const ManageProduct = () => {
         }
     };
 
+    // Delete a product
     const deleteProduct = async (product) => {
         if (window.confirm(`Are you sure you want to delete ${product.name}?`)) {
             try {
@@ -117,6 +123,7 @@ const ManageProduct = () => {
         }
     };
 
+    // Update an existing product
     const updateProduct = async () => {
         try {
             const formData = new FormData();

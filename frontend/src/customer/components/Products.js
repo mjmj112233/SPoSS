@@ -4,6 +4,7 @@ import sampleProduct from '../assets/sample.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
+//Component to display the list of products
 const Products = ({ searchQuery, addToOrder }) => {
     const [products, setProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -14,6 +15,7 @@ const Products = ({ searchQuery, addToOrder }) => {
         fetchProducts();
     }, []);
 
+    // Fetches products from the backend API
     const fetchProducts = async () => {
         try {
             const response = await fetch('https://sposs-backend.onrender.com/api/products');
@@ -21,8 +23,7 @@ const Products = ({ searchQuery, addToOrder }) => {
                 throw new Error('Failed to fetch products');
             }
             const data = await response.json();
-            // Filter out products where deleted is true
-            const activeProducts = data.filter(product => !product.deleted);
+            const activeProducts = data.filter(product => !product.deleted); // Filter out deleted products
             setProducts(activeProducts);
             setLoading(false); // Set loading to false after products are fetched
         } catch (error) {
@@ -30,16 +31,19 @@ const Products = ({ searchQuery, addToOrder }) => {
         }
     };
 
+    // Handles click event to select a product
     const handleProductClick = (productId) => {
         const product = products.find(p => p.id === productId);
         setSelectedProduct(product);
         setQuantity(1);
     };
 
+    // Handles closing the product modal
     const handleCloseModal = () => {
         setSelectedProduct(null);
     };
 
+    // Handles changes in the quantity input
     const handleQuantityChange = (e) => {
         const value = parseInt(e.target.value, 10);
         if (!isNaN(value) && value >= 1) {
@@ -47,20 +51,24 @@ const Products = ({ searchQuery, addToOrder }) => {
         }
     };
 
+    // Increments the quantity by 1
     const incrementQuantity = () => {
         setQuantity(quantity + 1);
     };
 
+    // Decrements the quantity by 1 if greater than 1
     const decrementQuantity = () => {
         if (quantity > 1) {
             setQuantity(quantity - 1);
         }
     };
 
+    // Filters products based on the search query
     const filteredProducts = products.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    // Handles adding a product to the order
     const handleAddToOrder = () => {
         if (selectedProduct) {
             addToOrder({
@@ -81,7 +89,7 @@ const Products = ({ searchQuery, addToOrder }) => {
             <div className={styles.productList}>
                 {filteredProducts.map((product) => (
                     <div key={product.id} className={styles.productContainer} onClick={() => handleProductClick(product.id)}>
-                        <img src={product.image || sampleProduct} alt={product.name} className={styles.productImage} /> {/* Use || operator to fallback to sampleProduct */}
+                        <img src={product.image || sampleProduct} alt={product.name} className={styles.productImage} /> {/* Use fallback image */}
                         <div className={styles.productName}>{product.name}</div>
                         <div className={styles.productDetails}>
                             <div className={styles.productCategory}>{product.category.name}</div>
@@ -90,7 +98,6 @@ const Products = ({ searchQuery, addToOrder }) => {
                     </div>
                 ))}
             </div>
-
             {selectedProduct && (
                 <div className={styles.productModal}>
                     <div className={styles.productModalContent}>
@@ -102,7 +109,6 @@ const Products = ({ searchQuery, addToOrder }) => {
                             <h2>{selectedProduct.name}</h2>
                             <div className={styles.productPrice}>₱ {selectedProduct.price}</div>
                         </div>
-
                         <div className={styles.quantityOrder}>
                             <div className={styles.quantityInput}>
                                 <div className={styles.quantityControl}>
